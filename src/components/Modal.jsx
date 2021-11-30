@@ -1,18 +1,28 @@
 import { Component } from 'react';
+import styles from '../components/Modal.module.css';
 
-// import styles from './ContactForm.module.css';
+ class Modal extends Component{   
 
-
-class Modal extends Component {    
-    render() {
+    componentDidMount() {
+        console.log('Modal mounted');
+    }
+    componentWillUnmount() {
+        console.log('Modal unmounted');
+    }
+    
+ 
+    render(){    
         return (            
-            <div className="overlay">
-                <div className="modal">
-                    <img src="" alt="" />
+            <div className={styles.Overlay}>
+                <div className={styles.Modal}>
+                    {this.props.children}
+                    
                 </div>
             </div>
         )
-    }
+    } 
 }
 
-export default Modal;
+export default Modal
+
+/*  */
