@@ -3,6 +3,7 @@ import { Component } from 'react';
 import styles from '../components/ImageGallery.module.css';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
+import Loader from '../components/Loader';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,15 +19,16 @@ state={
 };
 
 async componentDidUpdate(prevProps, prevState) {
-    this.setState({loading: true});
-
+    //URL params
+    const page = this.state.page
     const API_KEY = "23474268-70d851d8204f5902d9e83a665";
     let searchQuery = this.props.submitValue;
     const baseUrl = `https://pixabay.com/api/`;
-    const params = `?q=${searchQuery}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
+    const params = `?q=${searchQuery}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
     const url = baseUrl + params;
-    
+    //Main fetch
     if (prevProps.submitValue !== searchQuery) {
+        this.setState({loading: true});
       fetch(url)
         .then((response) => {
             console.log('response',response);
@@ -37,11 +39,41 @@ async componentDidUpdate(prevProps, prevState) {
           this.setState({
               images: [...results.hits],
             });
-            if(results.hits.length !== 0){toast('Search successfull!')}
-            else if (results.hits.length === 0){toast ('Sorry, nothing found!')}
+            if(results.hits.length !== 0){toast.success('Search successfull!')}
+            else if (results.hits.length === 0){toast.error ('Oops, nothing found!')}
             // else if (results.hits.length === 0){this.setState({loading: false})}
             //   console.log("results", results.hits);
         })
+        .catch((err) => {
+            toast.error ('Fetch error!');
+        }
+            
+        )
+        .finally(()=> this.setState({loading: false}))
+        
+    }
+    //Load more fetch
+    if(page !== prevState.page){
+                fetch(url)
+        .then((response) => {
+            console.log('response',response);
+            
+          return response.json();
+        })
+        .then((results) => {
+          this.setState(prevState => {
+            return {images: [...prevState.images, ...results.hits]}               
+            });
+            if(results.hits.length !== 0){toast.success('More results successfully loaded!')}
+            else if (results.hits.length === 0){toast.error ('Oops, nothing more!')}
+            // else if (results.hits.length === 0){this.setState({loading: false})}
+            //   console.log("results", results.hits);
+        })
+        .catch((err) => {
+            toast.error ('Fetch error!');
+        }
+            
+        )
         .finally(()=> this.setState({loading: false}))
     }
   }
@@ -50,6 +82,8 @@ async componentDidUpdate(prevProps, prevState) {
     this.setState(prevState => {
         console.log('loadmore clicked');
         return { page: prevState.page + 1 }
+
+
       })
     }
 
@@ -69,7 +103,7 @@ render() {
 
             return ( <>
             <ul className={styles.ImageGallery}>
-                {this.state.loading && <h1>Loading...</h1> }
+                {this.state.loading && <Loader/> }
                 {this.state.images.map(({ id, webformatURL, largeImageURL, tags }) => (
                 
                     <ImageGalleryItem

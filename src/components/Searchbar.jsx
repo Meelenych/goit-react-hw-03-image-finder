@@ -13,7 +13,7 @@ handleSubmit = (e)=> {
     e.preventDefault()
     if(this.state.changeValue.trim() === ''){
         // alert('Please specify your request!')
-        toast.error('Please specify your request!');
+        toast.warn('Please specify your request!');
         this.clearForm();
         return;
     }
