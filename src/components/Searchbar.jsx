@@ -1,5 +1,7 @@
 import { Component } from 'react';
-import styles from "../components/SearchBar.module.css"
+import styles from "../components/SearchBar.module.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class SearchBar extends Component {
     
@@ -10,8 +12,10 @@ class SearchBar extends Component {
 handleSubmit = (e)=> {
     e.preventDefault()
     if(this.state.changeValue.trim() === ''){
-        alert('Please specify your request!')
-        this.clearForm()
+        // alert('Please specify your request!')
+        toast.error('Please specify your request!');
+        this.clearForm();
+        return;
     }
     this.props.onFormSubmit(this.state.changeValue.toLowerCase().trim())
     this.clearForm()
@@ -47,7 +51,7 @@ clearForm = ()=>{
                     />
                 </form>
             </header>
-           
+            <ToastContainer/>
         </>
         )
     }

@@ -13,3 +13,20 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+    
+  .CloseBtn {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+     line-height: 1;
+    border: none;
+    background-color: #3f51b5;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    position: relative;
+    top: 40px;
+    left: 1240px;
+    
+}
