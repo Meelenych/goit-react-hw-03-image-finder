@@ -1,7 +1,7 @@
 import { Component } from "react";
 import LoaderSpin from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import styles from "../components/Loader.module.css";
+import styles from "./Loader.module.css";
 
 class Loader extends Component {
 	render() {

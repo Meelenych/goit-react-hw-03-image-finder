@@ -1,7 +1,7 @@
 import { Component } from "react";
-import styles from "../components/SearchBar.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styles from "./SearchBar.module.css";
 
 class SearchBar extends Component {
 	state = {
@@ -11,7 +11,6 @@ class SearchBar extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 		if (this.state.changeValue.trim() === "") {
-			// alert('Please specify your request!')
 			toast.warn("Please specify your request!");
 			this.clearForm();
 			return;

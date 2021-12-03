@@ -1,11 +1,12 @@
-import ImageGalleryItem from "./ImageGalleryItem";
+import ImageGalleryItem from "../GalleryItem/ImageGalleryItem";
 import { Component } from "react";
-import styles from "../components/ImageGallery.module.css";
-import Modal from "../components/Modal";
-import Button from "../components/Button";
-import Loader from "../components/Loader";
+import Modal from "../Modal/Modal";
+import Button from "../ButtonLoadMore/Button";
+import Loader from "../Loader/Loader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styles from "./ImageGallery.module.css";
+import { fetchApi } from "../../service/api";
 
 class ImageGallery extends Component {
 	state = {
@@ -18,24 +19,16 @@ class ImageGallery extends Component {
 	};
 
 	async componentDidUpdate(prevProps, prevState) {
-		//URL params
 		const page = this.state.page;
-		const API_KEY = "23474268-70d851d8204f5902d9e83a665";
 		let searchQuery = this.props.submitValue;
-		const baseUrl = `https://pixabay.com/api/`;
-		const params = `?q=${searchQuery}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
-		const url = baseUrl + params;
 
 		//Main fetch
 		if (prevProps.submitValue !== searchQuery) {
 			this.setState({ loading: true });
-			fetch(url)
-				.then((response) => {
-					console.log("response", response);
 
-					return response.json();
-				})
+			fetchApi(searchQuery, page)
 				.then((results) => {
+					console.log(fetchApi);
 					this.setState({
 						images: [...results.hits],
 					});
@@ -53,12 +46,7 @@ class ImageGallery extends Component {
 
 		//Load more fetch
 		if (page !== prevState.page) {
-			fetch(url)
-				.then((response) => {
-					console.log("response", response);
-
-					return response.json();
-				})
+			fetchApi(searchQuery, page)
 				.then((results) => {
 					this.setState((prevState) => {
 						return { images: [...prevState.images, ...results.hits] };

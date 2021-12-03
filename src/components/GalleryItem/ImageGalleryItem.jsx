@@ -1,4 +1,4 @@
-import styles from "../components/ImageGalleryItem.module.css";
+import styles from "./ImageGalleryItem.module.css";
 
 function ImageGalleryItem({ webformatURL, largeImageURL, tags, onClickProps }) {
 	function handleClick(e) {
