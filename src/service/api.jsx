@@ -5,10 +5,11 @@ async function fetchApi(searchQuery, page) {
 	const params = `?q=${searchQuery}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
 	const url = baseUrl + params;
 
-	await fetch(url).then((response) => {
-		console.log("response", response);
+	const fetchA = await fetch(url).then((response) => {
+		// console.log("response", response);
 		return response.json();
 	});
+	return fetchA;
 }
 
 export { fetchApi };
